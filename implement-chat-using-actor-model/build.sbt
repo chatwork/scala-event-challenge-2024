@@ -4,5 +4,5 @@ ThisBuild / scalaVersion := "3.3.3"
 
 lazy val root = (project in file("."))
   .settings(
-    name := "implement-chat-uising-actor-model"
+    name := "implement-chat-using-actor-model"
   )
