@@ -25,7 +25,7 @@ https://chatwork.connpass.com/event/320869/
 - チームの割り振りを決める
 - モブプログラミングを行う
 - モブタイマーを使う https://mobti.me/
-  - チーム名を決めて、タイマーを作る。URLを共有してください。
+  - チーム名を決めて、タイマーを作る。URLをチームメンバーに共有してください。
   - Show member from からメンバーを使う
   - Timer settingsのDuration を7分に設定する
   - ドライバーの方がStartボタンを押す
