@@ -38,3 +38,8 @@ https://chatwork.connpass.com/event/320869/
   - Timer settingsのDuration を7分に設定する
   - ドライバーの方がStartボタンを押す
   - 時間がきたら交代する
+- 自分の順番になったら、
+  - git pullする
+  - タイマーをスタートしてモブプログラミングを開始する
+  - タイムアップしたら、git pushする
+  - 順番を交代する
