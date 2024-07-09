@@ -79,8 +79,15 @@ final case class GroupChat private (
       messageBody: MessageBody,
       executorId: UserAccountId
   ): Either[GroupChatError, GroupChat] = {
-    // TODO: Post message
-    throw new NotImplementedError("postMessage is not implemented")
+    if (deleted) {
+      Left(GroupChatError.AlreadyDeletedError(id))
+    } else if (!members.containsByUserAccountId(executorId)) {
+      Left(GroupChatError.NotMemberError(id, executorId))
+    } else {
+      val message  = Message(messageId, messageBody, executorId, Instant.now())
+      val newState = copy(messages = messages.add(message), lastUpdatedAt = Instant.now())
+      Right(newState)
+    }
   }
 
   // 課題2
