@@ -47,38 +47,40 @@ final case class Members(private val values: Vector[Member]) {
 
   /** 当該コレクションが空かどうかを判定する。
     *
-    * @return 空の場合はtrue
+    * @return
+    *   空の場合はtrue
     */
-  def isEmpty: Boolean         = values.isEmpty
+  def isEmpty: Boolean = values.isEmpty
 
-  /**
-   * 当該コレクションが空でないかどうかを判定する。
-   *
-   * @return 空でない場合はtrue
-   */
-  def nonEmpty: Boolean        = values.nonEmpty
+  /** 当該コレクションが空でないかどうかを判定する。
+    *
+    * @return
+    *   空でない場合はtrue
+    */
+  def nonEmpty: Boolean = values.nonEmpty
 
-  /**
-   * 当該コレクションをVectorに変換する。
-   *
-   * @return [[Vector]]
-   */
+  /** 当該コレクションをVectorに変換する。
+    *
+    * @return
+    *   [[Vector]]
+    */
   def toVector: Vector[Member] = values
 
-  /**
-   * 指定したユーザアカウントIDが管理者かどうかを判定する。
-   *
-   * @param userAccountId ユーザアカウントID
-   * @return 管理者の場合はtrue
-   */
+  /** 指定したユーザアカウントIDが管理者かどうかを判定する。
+    *
+    * @param userAccountId
+    *   ユーザアカウントID
+    * @return
+    *   管理者の場合はtrue
+    */
   def isAdministrator(userAccountId: UserAccountId): Boolean =
     values.exists(e => e.userAccountId == userAccountId && e.role == MemberRole.Admin)
 
-  /**
-   * 管理者が含まれているかどうかを判定する。
-   *
-   * @return 管理者が含まれている場合はtrue
-   */
+  /** 管理者が含まれているかどうかを判定する。
+    *
+    * @return
+    *   管理者が含まれている場合はtrue
+    */
   def containsAdministrator: Boolean = values.exists(_.role == MemberRole.Admin)
 }
 
