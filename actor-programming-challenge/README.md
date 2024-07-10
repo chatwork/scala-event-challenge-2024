@@ -62,6 +62,7 @@ https://github.com/chatwork/scala-event-challenge-2024/blob/main/actor-programmi
 - モブプログラミングを行う
 - モブタイマーを使う https://mobti.me/
   - 適当なチーム名を決めて、タイマーを作る。URLをチームメンバーに共有してください。
+  - (初回のみ)チーム名でブランチを切る
   - Show member from からメンバーを使う
   - Timer settingsのDuration を7分に設定する
   - ドライバーの方がStartボタンを押す
