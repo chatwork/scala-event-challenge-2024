@@ -5,6 +5,7 @@ import chatwork.mob.no1.domain.groupChat.GroupChatName
 import chatwork.mob.no1.domain.groupChat.MemberRole
 import chatwork.mob.no1.domain.groupChat.MessageBody
 import chatwork.mob.no1.domain.userAccount.UserAccountId
+import chatwork.mob.no1.interfaceAdaptor.groupChat.GroupChatProtocol.PostMessageSuccess
 import org.apache.pekko.actor.testkit.typed.scaladsl.ScalaTestWithActorTestKit
 import org.scalatest.freespec.AnyFreeSpecLike
 
@@ -94,6 +95,8 @@ class GroupChatAggregateSpec extends ScalaTestWithActorTestKit with AnyFreeSpecL
       addMemberProbe.expectMessageType[GroupChatProtocol.AddMemberSuccess]
 
       val postMessageProbe = createTestProbe[GroupChatProtocol.PostMessageReply]()
+      aggregate ! GroupChatProtocol.PostMessage(id, MessageBody("a"), memberId, postMessageProbe.ref)
+      postMessageProbe.expectMessageType[PostMessageSuccess]
     }
     // 課題2
     "editMessage" in {
