@@ -180,18 +180,13 @@ final case class GroupChat private (
       messageBody: MessageBody,
       executorId: UserAccountId
   ): Either[GroupChatError, GroupChat] = {
-    if (deleted) {
-      Left(GroupChatError.AlreadyDeletedError(id))
-    } else if (!messages.containsByMessageId(messageId)) {
-      Left(GroupChatError.NotFoundMessageError(id, messageId))
-    } else {
-      val message = messages.findByMessageId(messageId).getOrElse(throw new Error())
-      if (message.authorId != executorId) {
-        Left(GroupChatError.NotAuthorError(id, messageId, message.authorId))
-      } else {
-        val newMessages = messages.editByMessageId(messageId, messageBody)
-        Right(copy(messages = newMessages))
-      }
+    for {
+      _ <- { if (deleted) Left(GroupChatError.AlreadyDeletedError(id)) else Right(()) }
+      message <- messages.findByMessageId(messageId).fold(Left(GroupChatError.NotFoundMessageError(id, messageId)))(Right(_))
+      _ <- { if (message.authorId != executorId) Left(GroupChatError.NotAuthorError(id, messageId, message.authorId)) else Right(()) }
+    } yield {
+      val newMessages = messages.editByMessageId(messageId, messageBody)
+      copy(messages = newMessages)
     }
   }
 
