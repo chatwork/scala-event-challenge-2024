@@ -71,8 +71,17 @@ object GroupChatAggregate {
           )
       // 課題1
       case PostMessage(id, messageBody, senderId, replyTo) if id == state.id =>
-        // TODO: Post message
-        Behaviors.same
+        val messageId = MessageId.generate()
+        state
+          .postMessage(messageId, messageBody, senderId).fold(
+            error =>
+              replyTo ! PostMessageFailure(error)
+              Behaviors.same
+            ,
+            newState =>
+              replyTo ! PostMessageSuccess(messageId)
+              created(newState)
+          )
       // 課題2
       case EditMessage(id, messageId, newMessageBody, editorId, replyTo) if id == state.id =>
         // TODO: Edit message
