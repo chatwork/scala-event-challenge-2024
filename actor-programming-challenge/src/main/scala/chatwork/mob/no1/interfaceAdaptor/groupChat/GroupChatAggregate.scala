@@ -90,7 +90,9 @@ object GroupChatAggregate {
               replyTo ! EditMessageFailure(error)
               Behaviors.same
             ,
-            newState => ???
+            newState =>
+              replyTo ! EditMessageSuccess(messageId)
+              created(newState)
           )
       // 課題3
       case DeleteMessage(id, messageId, deleterId, replyTo) if id == state.id =>
