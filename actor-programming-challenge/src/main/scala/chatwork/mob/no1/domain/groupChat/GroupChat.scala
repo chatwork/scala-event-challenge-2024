@@ -179,6 +179,19 @@ final case class GroupChat private (
       messageBody: MessageBody,
       executorId: UserAccountId
   ): Either[GroupChatError, GroupChat] = {
+    if (deleted) Left(GroupChatError.AlreadyDeletedError)
+    else {
+      messages.findByMessageId(messageId) match {
+        case Some(message) =>
+          if (message.authorId == executorId)
+            Right(
+              copy(
+                messages = messages.editByMessageId(messageId, messageBody)
+              )
+            )
+          else Left(GroupChatError.NotAuthorError)
+      }
+    }
     // TODO: Edit message
     throw new NotImplementedError("editMessage is not implemented")
   }
