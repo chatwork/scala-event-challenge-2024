@@ -159,7 +159,7 @@ final case class GroupChat private (
     }
   }
 
-  /** 課題3:メッセージを編集する。
+  /** 課題2:メッセージを編集する。
     *
     * @param messageId
     *   [[MessageId]]
@@ -171,7 +171,8 @@ final case class GroupChat private (
     *   エラーまたは新しいグループチャット エラーケース:
     *   - [[GroupChatError.AlreadyDeletedError]] グループチャットが削除済みの場合
     *   - [[GroupChatError.NotFoundMessageError]] メッセージが見つからない場合
-    *   - [[GroupChatError.NotAuthorError]] 実行者がメッセージの投稿者ではない場合 正常ケース:
+    *   - [[GroupChatError.NotAuthorError]] 実行者がメッセージの投稿者ではない場合
+    *   正常ケース:
     *   - [[GroupChat]] 新しいグループチャット
     */
   def editMessage(
@@ -179,8 +180,19 @@ final case class GroupChat private (
       messageBody: MessageBody,
       executorId: UserAccountId
   ): Either[GroupChatError, GroupChat] = {
-    // TODO: Edit message
-    throw new NotImplementedError("editMessage is not implemented")
+    if (deleted) {
+      Left(GroupChatError.AlreadyDeletedError(id))
+    } else if (!messages.containsByMessageId(messageId)) {
+      Left(GroupChatError.NotFoundMessageError(id, messageId))
+    } else {
+      val message = messages.findByMessageId(messageId).getOrElse(throw new Error())
+      if (message.authorId != executorId) {
+        Left(GroupChatError.NotAuthorError(id, messageId, message.authorId))
+      } else {
+        val newMessages = messages.editByMessageId(messageId, messageBody)
+        Right(copy(messages = newMessages))
+      }
+    }
   }
 
   /** 課題3:メッセージを削除する。
