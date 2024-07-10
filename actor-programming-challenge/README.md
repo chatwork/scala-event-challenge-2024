@@ -51,7 +51,7 @@ https://github.com/chatwork/scala-event-challenge-2024/blob/main/actor-programmi
 
 https://github.com/chatwork/scala-event-challenge-2024/blob/main/actor-programming-challenge/src/main/scala/chatwork/mob/no1/domain/groupChat/GroupChat.scala
 
-## アクターの仕組み
+## アクターの仕組み(雑な説明)
 
 <img src="doc/actor.jpg" width="80%" />
 
