@@ -95,7 +95,7 @@ class GroupChatAggregateSpec extends ScalaTestWithActorTestKit with AnyFreeSpecL
 
       val messageBody = MessageBody("message")
       val postProbe = createTestProbe[GroupChatProtocol.PostMessageReply]()
-      aggregate ! GroupChatProtocol.PostMessage(id, messageBody, adminId, postProbe.ref)
+      aggregate ! GroupChatProtocol.PostMessage(id, messageBody, memberId, postProbe.ref)
       postProbe.expectMessageType[GroupChatProtocol.PostMessageSuccess]
     }
     // 課題2
