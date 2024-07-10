@@ -100,7 +100,29 @@ class GroupChatAggregateSpec extends ScalaTestWithActorTestKit with AnyFreeSpecL
     }
     // 課題2
     "editMessage" in {
-      // TODO: Edit message
+      val id      = GroupChatId.generate()
+      val name    = GroupChatName("name")
+      val adminId = UserAccountId.generate()
+
+      val aggregate = spawn(GroupChatAggregate(id))
+
+      val createProbe = createTestProbe[GroupChatProtocol.CreateGroupChatReply]()
+      aggregate ! GroupChatProtocol.CreateGroupChat(id, name, adminId, createProbe.ref)
+      createProbe.expectMessage(GroupChatProtocol.CreateGroupChatSuccess)
+
+      val memberId       = UserAccountId.generate()
+      val addMemberProbe = createTestProbe[GroupChatProtocol.AddMemberReply]()
+      aggregate ! GroupChatProtocol.AddMember(id, memberId, MemberRole.Member, adminId, addMemberProbe.ref)
+      addMemberProbe.expectMessageType[GroupChatProtocol.AddMemberSuccess]
+
+      val postMessageProbe = createTestProbe[GroupChatProtocol.PostMessageReply]()
+      aggregate ! GroupChatProtocol.PostMessage(id, MessageBody("a"), memberId, postMessageProbe.ref)
+      val messageId = postMessageProbe.expectMessageType[GroupChatProtocol.PostMessageSuccess].messageId
+
+      val editMessageProbe = createTestProbe[GroupChatProtocol.EditMessageReply]()
+      val newMessageBody   = MessageBody("b")
+      aggregate ! GroupChatProtocol.EditMessage(id, messageId, newMessageBody, memberId, editMessageProbe.ref)
+      editMessageProbe.expectMessageType[GroupChatProtocol.EditMessageSuccess]
     }
     // 課題3
     "deleteMessage" in {

@@ -84,8 +84,16 @@ object GroupChatAggregate {
           )
       // 課題2
       case EditMessage(id, messageId, newMessageBody, editorId, replyTo) if id == state.id =>
-        // TODO: Edit message
-        Behaviors.same
+        state
+          .editMessage(messageId, newMessageBody, editorId).fold(
+            error =>
+              replyTo ! EditMessageFailure(error)
+              Behaviors.same
+            ,
+            newState =>
+              replyTo ! EditMessageSuccess(messageId)
+              created(newState)
+          )
       // 課題3
       case DeleteMessage(id, messageId, deleterId, replyTo) if id == state.id =>
         // TODO: Delete message
