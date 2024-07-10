@@ -53,7 +53,7 @@ https://github.com/chatwork/scala-event-challenge-2024/blob/main/actor-programmi
 
 ## アクターの仕組み
 
-<img src="bob/main/actor-programming-challenge/doc/actor.jpg"/>
+<img src="/bob/main/actor-programming-challenge/doc/actor.jpg"/>
 
 ## モブプログラミングの進め方
 
