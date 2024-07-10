@@ -181,9 +181,9 @@ final case class GroupChat private (
       executorId: UserAccountId
   ): Either[GroupChatError, GroupChat] = {
     for {
-      _ <- { if (deleted) Left(GroupChatError.AlreadyDeletedError(id)) else Right(()) }
-      message <- messages.findByMessageId(messageId).fold(Left(GroupChatError.NotFoundMessageError(id, messageId)))(Right(_))
-      _ <- { if (message.authorId != executorId) Left(GroupChatError.NotAuthorError(id, messageId, message.authorId)) else Right(()) }
+      _ <- Either.cond(!deleted, (), GroupChatError.AlreadyDeletedError(id))
+      message <- messages.findByMessageId(messageId).fold(Left(GroupChatError.NotFoundMessageError(id, messageId)))(Right.apply)
+      _ <- Either.cond(message.authorId == executorId, (), GroupChatError.NotAuthorError(id, messageId, message.authorId))
     } yield {
       val newMessages = messages.editByMessageId(messageId, messageBody)
       copy(messages = newMessages)
