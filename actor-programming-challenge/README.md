@@ -58,9 +58,10 @@ https://github.com/chatwork/scala-event-challenge-2024/blob/main/actor-programmi
 ## モブプログラミングの進め方
 
 - チームの割り振りを決める
+- 一人2分ぐらいでさくっと自己紹介(名前, 所属, Scala歴, アクター歴の有無など)
 - モブプログラミングを行う
 - モブタイマーを使う https://mobti.me/
-  - チーム名を決めて、タイマーを作る。URLをチームメンバーに共有してください。
+  - 適当なチーム名を決めて、タイマーを作る。URLをチームメンバーに共有してください。
   - Show member from からメンバーを使う
   - Timer settingsのDuration を7分に設定する
   - ドライバーの方がStartボタンを押す
