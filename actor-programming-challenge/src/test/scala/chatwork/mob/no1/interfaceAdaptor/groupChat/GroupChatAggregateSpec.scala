@@ -78,7 +78,15 @@ class GroupChatAggregateSpec extends ScalaTestWithActorTestKit with AnyFreeSpecL
     }
     // 課題1
     "postMessage" in {
-      // TODO: Post message
+      val id      = GroupChatId.generate()
+      val name    = GroupChatName("name")
+      val adminId = UserAccountId.generate()
+
+      val aggregate = spawn(GroupChatAggregate(id))
+
+      val messageBody = MessageBody("message")
+      val postProbe = createTestProbe[GroupChatProtocol.PostMessageReply]()
+      aggregate ! GroupChatProtocol.PostMessage(id, messageBody, adminId, postProbe.ref)
     }
     // 課題2
     "editMessage" in {
