@@ -72,19 +72,26 @@ object GroupChatAggregate {
       // 課題1
       case PostMessage(id, messageBody, senderId, replyTo) if id == state.id =>
         val messageId = MessageId.generate()
-        state.postMessage(messageId, messageBody, senderId).fold(
-          error =>
-            replyTo ! PostMessageFailure(error)
-            Behaviors.same
-          ,
-          newState =>
-            replyTo ! PostMessageSuccess(messageId)
-            created(newState)
-        )
+        state
+          .postMessage(messageId, messageBody, senderId).fold(
+            error =>
+              replyTo ! PostMessageFailure(error)
+              Behaviors.same
+            ,
+            newState =>
+              replyTo ! PostMessageSuccess(messageId)
+              created(newState)
+          )
       // 課題2
       case EditMessage(id, messageId, newMessageBody, editorId, replyTo) if id == state.id =>
-        // TODO: Edit message
-        Behaviors.same
+        state
+          .editMessage(messageId, newMessageBody, editorId).fold(
+            error =>
+              replyTo ! EditMessageFailure(error)
+              Behaviors.same
+            ,
+            newState => ???
+          )
       // 課題3
       case DeleteMessage(id, messageId, deleterId, replyTo) if id == state.id =>
         // TODO: Delete message

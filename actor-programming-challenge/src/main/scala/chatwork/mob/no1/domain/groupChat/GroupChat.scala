@@ -189,10 +189,11 @@ final case class GroupChat private (
                 messages = messages.editByMessageId(messageId, messageBody)
               )
             )
-          else Left(GroupChatError.NotAuthorError(id, messageId))
+          else Left(GroupChatError.NotAuthorError(id, messageId, executorId))
         case None =>
-          Left(GroupChatError.NotFoundMessageError(id, messageId, executorId))
+          Left(GroupChatError.NotFoundMessageError(id, messageId))
       }
+    }
   }
 
   /** 課題3:メッセージを削除する。
