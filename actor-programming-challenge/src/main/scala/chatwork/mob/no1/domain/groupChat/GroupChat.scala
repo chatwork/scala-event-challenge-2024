@@ -179,7 +179,7 @@ final case class GroupChat private (
       messageBody: MessageBody,
       executorId: UserAccountId
   ): Either[GroupChatError, GroupChat] = {
-    if (deleted) Left(GroupChatError.AlreadyDeletedError)
+    if (deleted) Left(GroupChatError.AlreadyDeletedError(id))
     else {
       messages.findByMessageId(messageId) match {
         case Some(message) =>
@@ -189,11 +189,10 @@ final case class GroupChat private (
                 messages = messages.editByMessageId(messageId, messageBody)
               )
             )
-          else Left(GroupChatError.NotAuthorError)
+          else Left(GroupChatError.NotAuthorError(id, messageId))
+        case None =>
+          Left(GroupChatError.NotFoundMessageError(id, messageId, executorId))
       }
-    }
-    // TODO: Edit message
-    throw new NotImplementedError("editMessage is not implemented")
   }
 
   /** 課題3:メッセージを削除する。

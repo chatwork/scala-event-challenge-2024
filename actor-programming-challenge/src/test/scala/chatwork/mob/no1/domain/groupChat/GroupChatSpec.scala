@@ -3,7 +3,7 @@ package chatwork.mob.no1.domain.groupChat
 import chatwork.mob.no1.domain.userAccount.UserAccountId
 import org.scalatest.freespec.AnyFreeSpec
 
-class GroupChatSpec extends AnyFreeSpec {
+class GroupChatSpec extends AnyFreeSpec with EitherValues {
   "GroupChat" - {
     "create" in {
       val id        = GroupChatId.generate()
@@ -58,7 +58,19 @@ class GroupChatSpec extends AnyFreeSpec {
     }
     // 課題2
     "editMessage" in {
-      // TODO: Edit message
+      val id = GroupChatId.generate()
+      val name = GroupChatName("name")
+      val adminId = UserAccountId.generate()
+      val groupChat = GroupChat.create(id, name, Members.singleAdmin(adminId))
+      val messageId = MessageId.generate()
+      val postedGroupChat =
+        groupChat.postMessage(messageId, MessageBody("message"), adminId).getOrElse(fail("postMessage failed"))
+      assert(postedGroupChat.messages.containsByMessageId(messageId))
+
+      val updatedBody = MessageBody("updated")
+
+      postedGroupChat.editMessage(messageId, updatedBody, adminId)
+      assert()
     }
     // 課題3
     "deleteMessage" in {
