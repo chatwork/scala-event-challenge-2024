@@ -53,7 +53,7 @@ https://github.com/chatwork/scala-event-challenge-2024/blob/main/actor-programmi
 
 ## アクターの仕組み
 
-![](doc/actor.jpg)
+<img src="doc/actor.jpg" width="80%" />
 
 ## モブプログラミングの進め方
 
