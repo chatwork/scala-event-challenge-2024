@@ -58,7 +58,25 @@ class GroupChatSpec extends AnyFreeSpec {
     }
     // 課題2
     "editMessage" in {
-      // TODO: Edit message
+      val id        = GroupChatId.generate()
+      val name      = GroupChatName("name")
+      val adminId   = UserAccountId.generate()
+      val groupChat = GroupChat.create(id, name, Members.singleAdmin(adminId))
+      val messageId = MessageId.generate()
+      val beforeMessageBody = MessageBody("beforeMessageBody")
+      val afterMessageBody = MessageBody("afterMessageBody") 
+
+      val postedGroupChat =
+        groupChat.postMessage(messageId, beforeMessageBody, adminId).getOrElse(fail("postMessage failed"))
+
+      val editedMessage =
+        postedGroupChat.editMessage(messageId, afterMessageBody, adminId).getOrElse(fail("postMessage failed"))
+
+      val message = editedMessage.messages.findByMessageId(messageId)
+      
+      val result = message.getOrElse(fail("message removed"))
+
+      assert(result.body == afterMessageBody)
     }
     // 課題3
     "deleteMessage" in {
