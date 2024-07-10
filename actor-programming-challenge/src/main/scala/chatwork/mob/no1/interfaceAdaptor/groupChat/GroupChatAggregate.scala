@@ -71,7 +71,9 @@ object GroupChatAggregate {
           )
       // 課題1
       case PostMessage(id, messageBody, senderId, replyTo) if id == state.id =>
-        // TODO: Post message
+        state.postMessage(MessageId.generate(), messageBody, senderId).fold(
+          error =>
+        )
         Behaviors.same
       // 課題2
       case EditMessage(id, messageId, newMessageBody, editorId, replyTo) if id == state.id =>
